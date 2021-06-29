@@ -1,6 +1,6 @@
 # Author:         Aki Iskandar 
-# Date Created:   06/23/2021
-# Last Modified:  06/25/2021
+# Date Created:   06/27/2021
+# Last Modified:  06/29/2021
 
 # Script name:    load_files_in_db.py
 
@@ -13,15 +13,31 @@
 
 # import required libraries
 import sys
+import os
+import time
 import pandas as pd
 import psycopg2
 import psycopg2.extras as extras
 from psycopg2 import OperationalError, errorcodes, errors
 
 
-def main():
-    pass
+# User variables
+target_directory = ''
 
+
+# Program variables
+csv_files        = []
+current_csv_file = ''
+
+
+# Iterate through the target folder and load each csv file into the database
+# one at a time. 
+
+def main():
+    for csv_file in csv_files:
+        print(csv_file)
+    #insert_hmda_data(get_pg_connection(), get_csv_for_ingestion_into_db(), 'hmda')
+    print('\nDONE')
 
 
 
