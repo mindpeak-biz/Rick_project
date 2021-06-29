@@ -22,7 +22,8 @@ from psycopg2 import OperationalError, errorcodes, errors
 
 
 # User variables
-target_directory = ''
+year_for_data        = 2019
+target_directory     = f'/Users/aki/dev/big_data_files/HMDA_{year_for_data}'
 
 
 # Program variables
@@ -34,17 +35,27 @@ current_csv_file = ''
 # one at a time. 
 
 def main():
-    for csv_file in csv_files:
-        print(csv_file)
-    #insert_hmda_data(get_pg_connection(), get_csv_for_ingestion_into_db(), 'hmda')
+
+    counter = 0
+    for filename in os.listdir(target_directory):
+        counter += 1
+        print(os.path.join(target_directory, filename))
+        insert_hmda_data(counter, get_pg_connection(), get_csv_for_ingestion_into_db(), 'hmda')
+        # debug break statement
+        break
+    print(counter)
     print('\nDONE')
 
+
+def get_csv_for_ingestion_into_db():
+    csvDataForIngestion = pd.read_csv('smaller_hmda_2014.csv',index_col=False)
+    return csvDataForIngestion
 
 
 # ================================================================
 # DATBASE HELPER FUNCTIONS
 # ================================================================
-def insert_hmda_data(conn, datafrm, table):
+def insert_hmda_data(counter, conn, datafrm, table):
     
     # Creating a list of tupples from the dataframe values
     tpls = [tuple(x) for x in datafrm.to_numpy()]
