@@ -1,0 +1,19 @@
+Use Pandas to extract the following data from the hmda csv files:
+
+
+Fields to read
+-------------------------------
+1) as_of_year
+2) respondent_id
+3) agency_code
+4) loan_type
+5) property_type
+6) loan_amount_000s
+ 
+
+Summary calculations
+-------------------------------
+a) Group by "respondent_id"
+b) Count "loan_amount_000s"
+c) Sum "loan_amount_000s"
+d) Average "loan_amount_000s". 
