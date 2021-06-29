@@ -21,11 +21,12 @@ CREATE TABLE old_hmda (
 
 CREATE TABLE new_hmda (
 	id serial,
+    record_number integer NULL,
     activity_year char(4) NULL,
     lei varchar(32) NULL,
     derived_dwelling_category varchar(256) NULL,
     loan_type int2 NULL,
-    loan_amount numeric(8,2) NOT NULL,
+    loan_amount numeric(10,2) NOT NULL,
     occupancy_type int2 NULL,
 	CONSTRAINT new_hmda_pkey1 PRIMARY KEY (id)
 );                                                      

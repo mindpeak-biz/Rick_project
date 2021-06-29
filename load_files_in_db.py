@@ -40,15 +40,16 @@ def main():
     for filename in os.listdir(target_directory):
         counter += 1
         print(os.path.join(target_directory, filename))
-        insert_hmda_data(counter, get_pg_connection(), get_csv_for_ingestion_into_db(), 'hmda')
+        insert_hmda_data(counter, get_pg_connection(), get_csv_for_ingestion_into_db(os.path.join(target_directory, filename)), 'new_hmda')
+        time.sleep(3)
         # debug break statement
-        break
+        #break
     print(counter)
     print('\nDONE')
 
 
-def get_csv_for_ingestion_into_db():
-    csvDataForIngestion = pd.read_csv('smaller_hmda_2014.csv',index_col=False)
+def get_csv_for_ingestion_into_db(file):
+    csvDataForIngestion = pd.read_csv(file,index_col=False)
     return csvDataForIngestion
 
 
@@ -64,12 +65,12 @@ def insert_hmda_data(counter, conn, datafrm, table):
     cols = ','.join(list(datafrm.columns))
     
     # SQL query to execute
-    sql = "INSERT INTO %s(%s) VALUES(%%s,%%s,%%s,%%s,%%s,%%s)" % (table, cols)
+    sql = "INSERT INTO %s(%s) VALUES(%%s,%%s,%%s,%%s,%%s,%%s,%%s)" % (table, cols)
     cursor = conn.cursor()
     try:
         cursor.executemany(sql, tpls)
         conn.commit()
-        print("Data inserted successfully...")
+        print(f"Data for file #{counter} inserted successfully...")
     except (Exception, psycopg2.DatabaseError) as err:
         # pass exception to function
         show_psycopg2_exception(err)
@@ -100,9 +101,9 @@ def get_pg_connection():
     }    
 
     try:
-        print('Connecting to the PostgreSQL...........')
+        #print('Connecting to the PostgreSQL...........')
         conn = psycopg2.connect(**conn_params_dic)
-        print("Connection successful..................")
+        #print("Connection successful..................")
         
     except OperationalError as err:
         # passing exception to function
