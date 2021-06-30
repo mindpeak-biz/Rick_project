@@ -1,33 +1,18 @@
-# Author:         Aki Iskandar 
-# Date Created:   06/26/2021
-# Last Modified:  06/26/2021
-
-# Script name:    split_large_file.py
-
-# Description:    This script serves to split a very HMDA large csv file that has   
-#                 millions of records into several smaller csv files.  
-#                 The max number of lines per new file is variable.
-#                 It's designed to chop up one large file at a time,
-#                 and if it's one large file per year, that is optimal.
-
-# Usage:          Modify the control variables and run the script 
-#                 (i.e. python split_large_file.py) 
-# ---------------------------------------------------------------------------------------
-
-
-# import required libraries
-import sys
 import os
 import time
 
-
 # User variables
-year_for_data        = 2017
+year_for_data        = 2019
 large_file_name      = f'/Users/aki/dev/big_data_files/FullDataFor{year_for_data}.csv'
 output_directory     = f'/Users/aki/dev/big_data_files/HMDA_{year_for_data}'
 max_lines_per_file   = 100000.0
-desired_cols         = [0, 1, 8, 15, 21, 40]
+desired_cols         = []
 
+# Select the columns based on year
+if year_for_data in range(2010,2018):
+    desired_cols = [0, 1, 6, 8, 13, 4]
+else:
+    desired_cols = [0, 1, 15, 8, 21]
 
 # Program variables
 header_line         = None
@@ -106,7 +91,13 @@ def chop_it_up():
 
 def process_line(current_line_number, desired_column_row_list):
     global f 
-    list_line_to_write = [current_line_number, desired_column_row_list[0], desired_column_row_list[1], desired_column_row_list[2], desired_column_row_list[3], desired_column_row_list[4], desired_column_row_list[5]] 
+    # -------------------------------------------------
+    list_line_to_write = []
+    if year_for_data in range(2010,2018):
+        list_line_to_write = [current_line_number, desired_column_row_list[0], desired_column_row_list[1], desired_column_row_list[2], desired_column_row_list[3], desired_column_row_list[4], desired_column_row_list[5]] 
+    else:
+        list_line_to_write = [current_line_number, desired_column_row_list[0], desired_column_row_list[1], desired_column_row_list[2], desired_column_row_list[3], desired_column_row_list[4], 'n/a'] 
+    # -------------------------------------------------
     list_line_to_write = [str(x) for x in list_line_to_write]
     # write out the current line's desired columns
     line_to_write = ",".join(list_line_to_write)
@@ -119,8 +110,12 @@ def start_new_file():
     # create the new file 
     current_file_name = f'{output_directory}/hmda_{current_file_number}.csv'
     f = open(current_file_name,"a+")
-    # write out the header row
-    desired_header_line = ",".join(['record_number', desired_column_headers_list[0], desired_column_headers_list[1], desired_column_headers_list[2], desired_column_headers_list[3], desired_column_headers_list[4], desired_column_headers_list[5]]) 
+    # -------------------------------------------------
+    # write out the header row (dynamically)
+    # desired_header_line = ",".join(['record_number', desired_column_headers_list[0], desired_column_headers_list[1], desired_column_headers_list[2], desired_column_headers_list[3], desired_column_headers_list[4], desired_column_headers_list[5]]) 
+    # write out the header row (manually)
+    desired_header_line = "record_number,year,lender_id,loan_type,property_type,loan_amount_in_000s,agency_code"
+    # -------------------------------------------------
     f.write(desired_header_line)
     f.write('\n')
     print(current_file_name)

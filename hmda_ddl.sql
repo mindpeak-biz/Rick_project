@@ -1,10 +1,6 @@
--- here are the columns that we want to store:
--- 0 activity_year
--- 1 lei
--- 8 derived_dwelling_category
--- 15 loan_type
--- 21 loan_amount
--- 40 occupancy_type
+-- Other tables that we need to create
+--  => 2018 & 2019 Public Transmittal Sheet - Schema
+--  => 2010 - 2017 Public Transmittal Sheet - Schema
 
 
 -- 2017
