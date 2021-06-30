@@ -7,6 +7,7 @@
 -- 40 occupancy_type
 
 
+-- 2017
 CREATE TABLE old_hmda (
 	id serial,
     as_of_year char(4) NULL,
@@ -18,7 +19,7 @@ CREATE TABLE old_hmda (
 	CONSTRAINT hmda_pkey1 PRIMARY KEY (id)
 );
 
-
+-- 2019
 CREATE TABLE new_hmda (
 	id serial,
     record_number integer NULL,

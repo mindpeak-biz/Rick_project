@@ -22,8 +22,8 @@ import time
 
 
 # User variables
-large_file_name      = '/Users/aki/dev/big_data_files/FullDataFor2019.csv'
-year_for_data        = 2019
+year_for_data        = 2017
+large_file_name      = f'/Users/aki/dev/big_data_files/FullDataFor{year_for_data}.csv'
 output_directory     = f'/Users/aki/dev/big_data_files/HMDA_{year_for_data}'
 max_lines_per_file   = 100000.0
 desired_cols         = [0, 1, 8, 15, 21, 40]
@@ -92,6 +92,11 @@ def chop_it_up():
             time.sleep(2) 
             current_file_number += 1
             start_new_file()
+
+        # debug
+        #current_line_columns = str(current_line_columns).replace('"','')
+        #print(current_line_columns)
+        #raise
 
         process_line(current_line_number, desired_column_row_list)
         current_line_number += 1
