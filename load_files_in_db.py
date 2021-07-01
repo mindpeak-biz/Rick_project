@@ -40,7 +40,7 @@ def main():
     for filename in os.listdir(target_directory):
         counter += 1
         print(os.path.join(target_directory, filename))
-        insert_hmda_data(counter, get_pg_connection(), get_csv_for_ingestion_into_db(os.path.join(target_directory, filename)), 'new_hmda')
+        insert_hmda_data(counter, get_pg_connection(), get_csv_for_ingestion_into_db(os.path.join(target_directory, filename)), 'hmda')
         time.sleep(3)
         # debug break statement
         #break

@@ -21,14 +21,14 @@ from psycopg2 import OperationalError, errorcodes, errors
 
 
 # User variables
-file_name  = 'asdf'
-table_name = 'asdf'
-target_directory = ''
-file_to_load  = f'/Users/aki/dev/big_data_files/ENUM_{file_name}'
+file_name  = 'transmittal_sheet.csv'
+table_name = 'transmittal_sheet'
+target_directory = '/Users/aki/dev/big_data_files/supporting_csvs/'
+file_to_load  = file_name
 
 
 def main():
-    insert_hmda_data(get_pg_connection(), get_csv_for_ingestion_into_db(os.path.join(target_directory, file_to_load)), table_name = 'asdf')
+    insert_hmda_data(get_pg_connection(), get_csv_for_ingestion_into_db(os.path.join(target_directory, file_to_load)), table_name)
     print('\nDONE')
 
 
@@ -40,7 +40,7 @@ def get_csv_for_ingestion_into_db(file):
 # ================================================================
 # DATBASE HELPER FUNCTIONS
 # ================================================================
-def insert_hmda_data(counter, conn, datafrm, table):
+def insert_hmda_data(conn, datafrm, table):
     
     # Creating a list of tupples from the dataframe values
     tpls = [tuple(x) for x in datafrm.to_numpy()]
@@ -49,12 +49,12 @@ def insert_hmda_data(counter, conn, datafrm, table):
     cols = ','.join(list(datafrm.columns))
     
     # SQL query to execute
-    sql = "INSERT INTO %s(%s) VALUES(%%s,%%s,%%s,%%s,%%s,%%s,%%s)" % (table, cols)
+    sql = "INSERT INTO %s(%s) VALUES(%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s)" % (table, cols)
     cursor = conn.cursor()
     try:
         cursor.executemany(sql, tpls)
         conn.commit()
-        print(f"Data for file #{counter} inserted successfully...")
+        print(f"Data inserted successfully...")
     except (Exception, psycopg2.DatabaseError) as err:
         # pass exception to function
         show_psycopg2_exception(err)
