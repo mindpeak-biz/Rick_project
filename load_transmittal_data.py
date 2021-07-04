@@ -1,13 +1,3 @@
-# Author:         Aki Iskandar 
-# Date Created:   06/27/2021
-# Last Modified:  06/29/2021
-
-# Script name:    load_enum_file_in_db.py
-
-# Description:    This script serves to load the emaun files (one per run) into the database.
-
-# Usage:          Run this script (i.e. python3 load_files_in_db.py) 
-# ---------------------------------------------------------------------------------------
 
 
 # import required libraries
@@ -21,9 +11,9 @@ from psycopg2 import OperationalError, errorcodes, errors
 
 
 # User variables
-file_name  = 'transmittal_sheet.csv'
+file_name  = 'transmittal_sheet_final.csv'
 table_name = 'transmittal_sheet'
-target_directory = '/Users/aki/dev/big_data_files/supporting_csvs/'
+target_directory = '/Users/aki/dev/big_data_files/transmittal_sheets/'
 file_to_load  = file_name
 
 
@@ -49,7 +39,7 @@ def insert_hmda_data(conn, datafrm, table):
     cols = ','.join(list(datafrm.columns))
     
     # SQL query to execute
-    sql = "INSERT INTO %s(%s) VALUES(%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s)" % (table, cols)
+    sql = "INSERT INTO %s(%s) VALUES(%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s)" % (table, cols)
     cursor = conn.cursor()
     try:
         cursor.executemany(sql, tpls)

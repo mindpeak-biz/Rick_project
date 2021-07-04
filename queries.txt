@@ -1,0 +1,36 @@
+Events
+===========
+Entity types
+
+
+1. Acquirer
+
+2. Target
+
+3. Survivor
+
+
+"Things": (a) loan amount, (b) number of loans (calcs: mean, avg, max, min)
+
+
+Over time and location:  Impact (+ - one year from event ...) 
+Events: throughout 2011-1018 & Mortgages throughout 2010-1019)
+
+
+Location:  State, Zip / City, Geography / physical (distance between two zip codes) 
+
+
+Queries: (we wnat to know)
+----------------------------
+Where are the target and acquirer located?
+
+Is there a change in the number, and dollar volume, of loans over time? And is it related to lender type?
+How is it correlated to rates?
+
+
+Is there a direct or inverse relationship to the increase/decrease of mortgage lenders to loan originations?
+
+
+
+
+
