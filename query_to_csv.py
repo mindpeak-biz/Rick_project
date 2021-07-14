@@ -8,6 +8,7 @@ import psycopg2
 import psycopg2.extras as extras
 from psycopg2 import OperationalError, errorcodes, errors
 
+This is just for show
 
 # User variables
 target_year         = str(sys.argv[1])
