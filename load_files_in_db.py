@@ -22,7 +22,7 @@ from psycopg2 import OperationalError, errorcodes, errors
 
 
 # User variables
-year_for_data        = 2019
+year_for_data        = 2020
 target_directory     = f'/Users/aki/dev/big_data_files/HMDA_{year_for_data}'
 
 

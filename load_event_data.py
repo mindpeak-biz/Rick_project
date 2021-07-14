@@ -10,7 +10,7 @@ from psycopg2 import OperationalError, errorcodes, errors
 
 
 # User variables
-file_name  = 'combination_events.csv'
+file_name  = 'EventData2011_2020.csv'
 table_name = 'events'
 target_directory = '/Users/aki/dev/big_data_files/events/'
 file_to_load  = file_name

@@ -11,7 +11,7 @@ from psycopg2 import OperationalError, errorcodes, errors
 
 
 # User variables
-file_name  = 'hmda_2010_transmittal_sheet.csv'
+file_name  = 'hmda_2020_transmittal_sheet.csv'
 table_name = 'transmittal_sheet'
 target_directory = '/Users/aki/dev/big_data_files/transmittal_sheets/'
 file_to_load  = file_name

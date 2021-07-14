@@ -2,7 +2,7 @@ import os
 import time
 
 # User variables
-year_for_data        = 2019
+year_for_data        = 2020
 large_file_name      = f'/Users/aki/dev/big_data_files/FullDataFor{year_for_data}.csv'
 output_directory     = f'/Users/aki/dev/big_data_files/HMDA_{year_for_data}'
 max_lines_per_file   = 100000.0

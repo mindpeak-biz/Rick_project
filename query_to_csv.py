@@ -3,7 +3,7 @@
 import sys
 import os
 import time
-import pandas as pd
+#import pandas as pd
 import psycopg2
 import psycopg2.extras as extras
 from psycopg2 import OperationalError, errorcodes, errors
@@ -11,12 +11,25 @@ from psycopg2 import OperationalError, errorcodes, errors
 
 # User variables
 target_year         = str(sys.argv[1])
-exported_file_name  = f"hmda_transmittal_{target_year}.csv"
+
+#exported_file_name  = f"hmda_transmittal_{target_year}.csv"
+#sql = f'''
+#COPY (
+#    select * from hmda_transmittal_{target_year} order by activity_year, lender_name
+#) TO STDOUT WITH CSV DELIMITER ','
+#'''
+
+#this was for the full range of years
+exported_file_name  = f"hmda_transmittal_2010_{target_year}.csv"
 sql = f'''
 COPY (
-    select * from hmda_transmittal_{target_year} order by activity_year, lender_name
+    select * from hmda_transmittal_2010_{target_year} order by activity_year, lender_name
 ) TO STDOUT WITH CSV DELIMITER ','
 '''
+
+
+
+
 target_directory = '/Users/aki/dev/big_data_files/exported/'
 exported_file_full_path = f"{target_directory}{exported_file_name}"
 
