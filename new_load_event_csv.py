@@ -1,54 +1,55 @@
 
+
 # import required libraries
 import sys
 import os
 import time
-#import pandas as pd
+import pandas as pd
 import psycopg2
 import psycopg2.extras as extras
 from psycopg2 import OperationalError, errorcodes, errors
 
 
 # User variables
-target_year         = str(sys.argv[1])
-
-exported_file_name  = f"hmda_transmittal_{target_year}.csv"
-sql = f'''
-COPY (
-    select * from hmda_transmittal_{target_year} order by activity_year, lender_name
-) TO STDOUT WITH CSV DELIMITER ','
-'''
-
-#this was for the full range of years
-#exported_file_name  = f"hmda_transmittal_2010_{target_year}.csv"
-#sql = f'''
-#COPY (
-#   select * from hmda_transmittal_2010_{target_year} order by activity_year, lender_name
-#) TO STDOUT WITH CSV DELIMITER ','
-#'''
-
-
-target_directory = '/Users/aki/dev/big_data_files/exported/'
-exported_file_full_path = f"{target_directory}{exported_file_name}"
-
+file_name  = 'Business_Combinations_Master.csv'
+table_name = 'events'
+target_directory = '/Users/aki/dev/big_data_files/events/'
+file_to_load  = file_name
 
 
 def main():
-    export_query_to_csv()
+    insert_event_data(get_pg_connection(), get_csv_for_ingestion_into_db(os.path.join(target_directory, file_to_load)), table_name)
     print('\nDONE')
 
 
-def export_query_to_csv():
-    global exported_file_full_path, sql
-    conn = get_pg_connection()
-    cur = conn.cursor()
-    with open(exported_file_full_path, "w") as file:
-        cur.copy_expert(sql, file)
+def get_csv_for_ingestion_into_db(file):
+    csvDataForIngestion = pd.read_csv(file,index_col=False)
+    return csvDataForIngestion
 
 
 # ================================================================
 # DATBASE HELPER FUNCTIONS
 # ================================================================
+def insert_event_data(conn, datafrm, table):
+    
+    # Creating a list of tupples from the dataframe values
+    tpls = [tuple(x) for x in datafrm.to_numpy()]
+    
+    # dataframe columns with Comma-separated
+    cols = ','.join(list(datafrm.columns))
+    
+    # SQL query to execute
+    sql = "INSERT INTO %s(%s) VALUES(%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s)" % (table, cols)
+    cursor = conn.cursor()
+    try:
+        cursor.executemany(sql, tpls)
+        conn.commit()
+        print(f"Combination event data inserted successfully...")
+    except (Exception, psycopg2.DatabaseError) as err:
+        # pass exception to function
+        show_psycopg2_exception(err)
+        cursor.close()
+
 
 def show_psycopg2_exception(err):
     # get details about the exception
@@ -59,10 +60,10 @@ def show_psycopg2_exception(err):
     print ("\npsycopg2 ERROR:", err, "on line number:", line_n)
     print ("psycopg2 traceback:", traceback, "-- type:", err_type)
     # psycopg2 extensions.Diagnostics object attribute
-    #print ("\nextensions.Diagnostics:", err.diag)
+    print ("\nextensions.Diagnostics:", err.diag)
     # print the pgcode and pgerror exceptions
-    #print ("pgerror:", err.pgerror)
-    #print ("pgcode:", err.pgcode, "\n")
+    print ("pgerror:", err.pgerror)
+    print ("pgcode:", err.pgcode, "\n")
 
 
 def get_pg_connection():
