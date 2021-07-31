@@ -12,12 +12,12 @@ from psycopg2 import OperationalError, errorcodes, errors
 # User variables
 target_year         = str(sys.argv[1])
 
-exported_file_name  = f"hmda_transmittal_{target_year}.csv"
-sql = f'''
-COPY (
-    select * from hmda_transmittal_{target_year} order by activity_year, lender_name
-) TO STDOUT WITH CSV DELIMITER ','
-'''
+#exported_file_name  = f"hmda_transmittal_{target_year}.csv"
+#sql = f'''
+#COPY (
+#    select * from hmda_transmittal_{target_year} order by activity_year, lender_name
+#) TO STDOUT WITH CSV DELIMITER ','
+#'''
 
 #this was for the full range of years
 #exported_file_name  = f"hmda_transmittal_2010_{target_year}.csv"
@@ -26,6 +26,14 @@ COPY (
 #   select * from hmda_transmittal_2010_{target_year} order by activity_year, lender_name
 #) TO STDOUT WITH CSV DELIMITER ','
 #'''
+
+#this is for the events table
+exported_file_name  = f"events.csv"
+sql = f'''
+COPY (
+   select effyear, acq_pstalp, acq_pcity, acq_pzip5, acq_instname, out_instname, sur_instname, * from events order by effyear, acq_pstalp, acq_pcity, acq_pzip5, acq_instname, out_instname, sur_instname
+) TO STDOUT WITH CSV DELIMITER ','
+'''
 
 
 target_directory = '/Users/aki/dev/big_data_files/exported/'

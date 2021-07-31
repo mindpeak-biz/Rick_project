@@ -4,12 +4,19 @@ select ts.activity_year, ts.cleasnsed_lender_id lender_id, ts.respondent_name le
        ts.respondent_city, ts.respondent_state, ts.respondent_zip_code, 
 	   count(*) number_of_loans, sum(h.loan_amount_in_000s) sum_of_mtgs   
 from transmittal_sheet ts 
-join hmda h on h.cleasnsed_lender_id = ts.cleasnsed_lender_id 
+join hmda h on h.cleasnsed_lender_id = ts.cleasnsed_lender_id and h.year = ts.activity_year 
 where ts.activity_year = '2020' 
 group by ts.activity_year, ts.cleasnsed_lender_id, ts.respondent_name, 
          ts.respondent_city, ts.respondent_state, ts.respondent_zip_code 
 order by ts.activity_year asc, ts.respondent_name asc 
 WITH  DATA;
+
+
+select count(*) from public.transmittal_sheet where activity_year = '2010';
+select count(*) from public.hmda where year = '2010';
+
+update public.hmda set loan_amount_in_000s = (loan_amount_in_000s/1000)  where year = '2020';
+select loan_amount_in_000s from public.hmda where year = '2020' limit 100;
 
 
 select max(effyear) from public.events limit 1; 
