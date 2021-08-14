@@ -28,10 +28,10 @@ target_year         = str(sys.argv[1])
 #'''
 
 #this is for the events table
-exported_file_name  = f"events.csv"
+exported_file_name  = f"ricks_lender_id_lookup.csv"
 sql = f'''
 COPY (
-   select effyear, acq_pstalp, acq_pcity, acq_pzip5, acq_instname, out_instname, sur_instname, * from events order by effyear, acq_pstalp, acq_pcity, acq_pzip5, acq_instname, out_instname, sur_instname
+   select * from hmda_transmittal_2010_2020 
 ) TO STDOUT WITH CSV DELIMITER ','
 '''
 
